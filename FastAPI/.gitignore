@@ -1,0 +1,109 @@
+# Environment variables
+.env
+
+# Python virtual environment
+venv/
+env/
+.venv/
+.env/
+/venv/*
+*.pyc
+__pycache__/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.bak
+
+# Python package files
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Pytest
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+
+# Pipenv
+Pipfile.lock
+
+# Poetry
+poetry.lock
+
+# Dependency directories
+node_modules/
+
+# Compiled Python files
+*.pyc
+
+# Database files
+*.db
+*.sqlite3
+
+# Backup files
+*~
+
+# Cache directories
+.cache/
+
+# Local configuration file
+config.local.py
+
+# Compiled files
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases
+*.sql
+*.sqlite
+
+# OS generated files
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+# Ignore lib directory by default
+/lib/*
+
+# But include specific files or subdirectories if needed
+!/lib/important_custom_module.py
+!/lib/custom_package/
+
+# Requirements
+requirements.txt

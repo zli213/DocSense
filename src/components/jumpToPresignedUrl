@@ -1,0 +1,19 @@
+import { generatePresignedUrl } from "@/lib/s3Service";
+
+export const jumpToPresignedUrl = async (metaData, hoveredIndex) => {
+  // Checks if hoveredIndex is valid and sourceUri exists
+  let sourceUri = metaData[hoveredIndex]?.doc.metadata.source;
+  if (!sourceUri) {
+    return; // Do nothing when there are no buttons available
+  }
+
+  // Extract objectKey
+  const objectKey = sourceUri.split("s3://documentsearch/")[1];
+  const bucketName = "documentsearch";
+
+  // Generate pre-signed URLs
+  let presignedUrl = await generatePresignedUrl(bucketName, objectKey);
+
+  // Jump to the generated pre-signed URL
+  window.open(presignedUrl, "_blank");
+};

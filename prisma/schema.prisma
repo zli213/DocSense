@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:n02kRdl1e7JDgO2dXtqX@database-1.cpua0yc0ue7o.ap-southeast-2.rds.amazonaws.com:5432/database-1?schema=public&sslmode=require"
+}
+
+model User {
+  id             Int              @id @default(autoincrement())
+  userName       String
+  password       String
+  roleID         Int?
+  createTime     DateTime         @default(now())
+  updateTime     DateTime         @updatedAt
+  email          String           @unique
+  departmentID   Int?
+  s3link         String?
+  AccessLogs     AccessLog[]
+  SearchLogs     SearchLog[]
+  UserDepartment UserDepartment[]
+  UserPositions  UserPositions[]
+  UserRoles      UserRole[]
+}
+
+model Document {
+  documentID    Int         @id @default(autoincrement())
+  title         String?
+  s3link        String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  createdBy     String?
+  summary       String?
+  AccessCode    String?
+  Tag           String?
+  docDepartment String?
+  vectorId      String?
+  metaData      Json
+  AccessLogs    AccessLog[]
+}
+
+model RoleType {
+  id         Int    @id @default(autoincrement())
+  roleID     Int
+  AccessCode String
+  Role       Role   @relation(fields: [roleID], references: [id])
+}
+
+model AccessLog {
+  logID      Int      @id @default(autoincrement())
+  userID     Int
+  documentID Int
+  accessTime DateTime @default(now())
+  action     String
+  Document   Document @relation(fields: [documentID], references: [documentID])
+  User       User     @relation(fields: [userID], references: [id])
+}
+
+model SearchLog {
+  id               Int      @id @default(autoincrement())
+  userID           Int
+  searchContent    Json
+  searchQueryTitle String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  User             User     @relation(fields: [userID], references: [id])
+}
+
+model Department {
+  id                 Int              @id @default(autoincrement())
+  departmentName     String
+  departmentCode     Int              @unique
+  level              Int
+  positionID         Int?
+  parentDepartmentId Int?
+  parentDepartment   Department?      @relation("SubDepartments", fields: [parentDepartmentId], references: [id])
+  subDepartments     Department[]     @relation("SubDepartments")
+  UserDepartment     UserDepartment[]
+}
+
+model Position {
+  id            Int             @id @default(autoincrement())
+  jobTitle      String
+  UserPositions UserPositions[]
+}
+
+model Role {
+  id       Int        @id @default(autoincrement())
+  roleName String
+  RoleType RoleType[]
+  UserRole UserRole[]
+}
+
+model UserRole {
+  userID Int
+  roleID Int
+  Role   Role @relation(fields: [roleID], references: [id])
+  User   User @relation(fields: [userID], references: [id])
+
+  @@id([userID, roleID])
+}
+
+model UserPositions {
+  userID     Int
+  positionID Int
+  Position   Position @relation(fields: [positionID], references: [id])
+  User       User     @relation(fields: [userID], references: [id])
+
+  @@id([userID, positionID])
+}
+
+model UserDepartment {
+  userID     Int
+  depID      Int
+  Department Department @relation(fields: [depID], references: [id])
+  User       User       @relation(fields: [userID], references: [id])
+
+  @@id([userID, depID])
+}
